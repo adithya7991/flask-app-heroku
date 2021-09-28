@@ -22,6 +22,7 @@ uri = os.environ.get('DATABASE_URL', 'sqlite:///data.db')
 if uri.startswith("postgres://"):
     uri.replace("postgres://", "postgresql://", 1)
 app.config['SQLALCHEMY_DATABASE_URI'] = uri
+print(uri)
 
 
 # app.config['JWT_AUTH_USERNAME_KEY'] = 'email'
