@@ -6,10 +6,7 @@ from security import authenticate, identity
 from resources.user import *
 from resources.item import *
 from resources.store import *
-
-
-
-
+import os
 
 
 
@@ -18,8 +15,15 @@ api = Api(app)
 app.secret_key = "adi"
 
 app.config['JWT_AUTH_URL_RULE'] = '/login'
-app.config['JWT_EXPIRATION_DELTA'] = timedelta(seconds=1800) 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
+app.config['JWT_EXPIRATION_DELTA'] = timedelta(seconds=1800)
+
+# Changing to Postgress from SQLite
+uri = os.environ.get('DATABASE_URL', 'sqlite:///data.db')
+if uri.startswith("postgres://"):
+    uri.replace("postgres://", "postgresql://", 1)
+app.config['SQLALCHEMY_DATABASE_URI'] = uri
+
+
 # app.config['JWT_AUTH_USERNAME_KEY'] = 'email'
 jwt = JWT(app, authenticate, identity) # /login , default endpoint name /auth
 
