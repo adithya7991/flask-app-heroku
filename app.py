@@ -11,7 +11,7 @@ from resources.store import *
 
 
 
-# if __name__ == "__main__":
+
 
 app = Flask(__name__)
 api = Api(app)
@@ -40,4 +40,15 @@ api.add_resource(Store, '/store/<string:name>', '/store')
 api.add_resource(StoreList, '/stores')  
 
 
-app.run(port=5000, debug=True)
+
+
+if __name__ == "__main__": # Executed only when run app.py directly
+    
+    from db import db
+    db.init_app(app)
+
+    @app.before_first_request # Before 1st API req, tables will be created
+    def create_tables():
+        db.create_all()
+
+    app.run(port=5000, debug=True)
