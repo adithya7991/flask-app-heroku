@@ -18,11 +18,7 @@ app.config['JWT_AUTH_URL_RULE'] = '/login'
 app.config['JWT_EXPIRATION_DELTA'] = timedelta(seconds=1800)
 
 # Changing to Postgress from SQLite
-uri = os.environ.get('DATABASE_URI', 'sqlite:///data.db')
-if uri.startswith("postgres://"):
-    uri.replace("postgres://", "postgresql://", 1)
-app.config['SQLALCHEMY_DATABASE_URI'] = uri
-
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL').replace("://", "ql://", 1)
 
 
 # app.config['JWT_AUTH_USERNAME_KEY'] = 'email'
